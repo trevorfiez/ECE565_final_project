@@ -1,0 +1,34 @@
+\section{Maximum Likelihood and Expectation-Maximization}
+
+\subsection{Maximum Likelihood Equations}
+Want to do: $\frac{\delta \log p}{\delta \mathbf{\theta}} = \mathbf{0}$
+\begin{align*}
+\log p(k_1(1), \cdots, k_1(N) | \alpha, p, q) &= \sum_{i=1}^{N} \log \left[ \alpha \binom{n}{k_1(i)} p^{k_1(i)} (1-p)^{n - k_1(i)} + (1-\alpha) \binom{n}{k_1(i)} q^{k_1(i)} (1-q)^{n - k_1(i)}  \right] 
+\end{align*}
+\begin{align*}
+\frac{\delta \log p}{\delta \mathbf{\theta}} &= \begin{bmatrix} 
+\sum_{i=1}^{N} \frac{\phi_1(k_1(i)) - \phi_0(k_1(i))}{\alpha \phi_1(k_1(i)) + (1-\alpha)\phi_0(k_1(i))} \\ 
+\sum_{i=1}^{N} \frac{\alpha \binom{n}{k_1(i)} \left( k_1(i) p^{k_1(i)-1} (1-p)^{n-k_1(i)} - p^{k_1(i)} (n-k_1(i)) (1-p)^{n-k_1(i)-1} \right) }{\alpha \phi_1(k_1(i)) + (1-\alpha)\phi_0(k_1(i))} \\ 
+\sum_{i=1}^{N} \frac{(1-\alpha) \binom{n}{k_1(i)} \left( k_1(i) q^{k_1(i)-1} (1-q)^{n-k_1(i)} - q^{k_1(i)} (n-k_1(i)) (1-q)^{n-k_1(i)-1} \right) }{\alpha \phi_1(k_1(i)) + (1-\alpha)\phi_0(k_1(i))} \end{bmatrix} = \mathbf{0}
+\end{align*}
+
+\subsection{EM Algorithm}
+
+Let $k_1(1), \cdots, k_1(N)$ be the observed data. 
+We introduce membership variables $y(i), \cdots, y(N)$ (hidden data) such that $p(y(i) = c) = \alpha_c$. Because we only have two clases, then 
+\begin{align*}
+p(y(i) = 1) &= \alpha \\
+p(y(i) = 0) &= 1-p(y(i) = 1) = 1 - \alpha
+\end{align*}
+
+E-step is given by:
+\begin{align*}
+p(y(i) = 1 | k_1(i), \mathbf{\theta}) &= \frac{\alpha \binom{n}{k_1(i)} p^{k_1(i)} (1-p)^{n-k_1(i)}}{\alpha \binom{n}{k_1(i)} p^{k_1(i)} (1-p)^{n-k_1(i)} + (1-\alpha) \binom{n}{k_1(i)} q^{k_1(i)} (1-q)^{n-k_1(i)}} \\
+p(y(i) = 0 | k_1(i), \mathbf{\theta}) &= \frac{(1-\alpha) \binom{n}{k_1(i)} q^{k_1(i)} (1-q)^{n-k_1(i)}}{\alpha \binom{n}{k_1(i)} p^{k_1(i)} (1-p)^{n-k_1(i)} + (1-\alpha) \binom{n}{k_1(i)} q^{k_1(i)} (1-q)^{n-k_1(i)}}
+\end{align*}
+
+M-step:
+
+$\alpha_1^{k+1} = \alpha^{k+1} = \frac{1}{N} \sum_{i=1}^{N} p(y(i) = 1 | k_1(i), \mathbf{\theta^{k}})$ \\
+$\alpha_0^{k+1} = 1 - \alpha_1^{k+1} = 1 - \alpha^{k+1}$\\
+
