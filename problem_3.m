@@ -24,9 +24,9 @@ function [  ] = problem_3( )
     for i = 1:alphas
         real_alpha_vals(i, 1) = i * 0.1;
         
-        alpha_vals(i, 1) = 0.1;
-        p_vals(i, 1) = 0.1;
-        q_vals(i, 1) = 0.1;
+        alpha_vals(i, 1) = rand();
+        p_vals(i, 1) = rand();
+        q_vals(i, 1) = rand();
         
         all_bags = cat(2, all_bags, get_bags(real_alpha_vals(i, 1), p, q, n, N));
     end
