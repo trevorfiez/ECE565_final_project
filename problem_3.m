@@ -1,5 +1,6 @@
 function [  ] = problem_3( )
 
+    %p must be < q (used to compute MSE later)
     p = 0.2;
     q = 0.4;
     n = 20;
@@ -23,23 +24,34 @@ function [  ] = problem_3( )
     %Initialize values
     for i = 1:alphas
         real_alpha_vals(i, 1) = i * 0.1;
-        
-        alpha_vals(i, 1) = rand();
-        p_vals(i, 1) = rand();
-        q_vals(i, 1) = rand();
-        
         all_bags = cat(2, all_bags, get_bags(real_alpha_vals(i, 1), p, q, n, N));
     end
     
     for a = 1:alphas
         for trial = 1:trials
+            
+            %Initialize randomly (trials should be independent)
+            alpha_vals(a, 1) = rand();
+            p_vals(a, 1) = rand();
+            q_vals(a, 1) = rand();
+            
             %Run EM
             [alpha_vals(a, 1), p_vals(a, 1), q_vals(a, 1)] = EM_step(alpha_vals(a, 1), p_vals(a, 1), q_vals(a, 1), n, N, all_bags(:, a));
             
             %Compute MSE
-            alpha_squared_error_sum(a,1) = alpha_squared_error_sum(a,1) + (alpha_vals(a, 1) - real_alpha_vals(a,1))^2;
-            p_squared_error_sum(a,1) = p_squared_error_sum(a,1) + (p_vals(a, 1) - p)^2;
-            q_squared_error_sum(a,1) = q_squared_error_sum(a,1) + (q_vals(a, 1) - q)^2;
+            alpha_iteration = alpha_vals(a, 1);
+            p_iteration = p_vals(a, 1);
+            q_iteration = q_vals(a, 1);
+            %Force estimated p to be less than estimated q
+            if p_vals(a, 1) > q_vals(a, 1)
+                alpha_iteration = 1 - alpha_vals(a, 1);
+                p_iteration = q_vals(a, 1);
+                q_iteration = p_vals(a, 1);
+            end
+     
+            alpha_squared_error_sum(a,1) = alpha_squared_error_sum(a,1) + (alpha_iteration - real_alpha_vals(a,1))^2;
+            p_squared_error_sum(a,1) = p_squared_error_sum(a,1) + (p_iteration - p)^2;
+            q_squared_error_sum(a,1) = q_squared_error_sum(a,1) + (q_iteration - q)^2;
         end
     end
     
