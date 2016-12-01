@@ -42,7 +42,7 @@ p(\mathbf{k_1}, \mathbf{y} | \theta ) &= \prod_{i=1}^{N} p(k_1(i), y(i) | \theta
 
 Let $Q$ be an auxiliary function such that
 \begin{align*}
-Q(\alpha, \alpha') &= \mathrm{E} \left[ \log p(\mathbf{k_1}, \mathbf{y} | \theta ) | \mathbf{k_1}, \theta' \right] \\
+Q(\theta, \theta') &= \mathrm{E} \left[ \log p(\mathbf{k_1}, \mathbf{y} | \theta ) | \mathbf{k_1}, \theta' \right] \\
 &= \mathrm{E} \left[ \sum_{i=1}^{N} \sum_{l=1}^{M} I(y(i)=l) (\log \phi_l(k_1(i)) + \log \alpha_l) | \mathbf{k_1}, \theta' \right] \\
 &= \sum_{i=1}^{N} \sum_{l=1}^{M} \mathrm{E} \left[ I(y(i)=l) | \mathbf{k_1}, \theta' \right] (\log \phi_l(k_1(i)) + \log \alpha_l)  \\
 &= \sum_{i=1}^{N} \sum_{l=1}^{M} p(y(i) = c | k_1(i), \theta') (\log \phi_l(k_1(i)) + \log \alpha_l)
@@ -57,12 +57,14 @@ p(y(i) = 0 | k_1(i), \mathbf{\theta'}) &= \frac{(1-\alpha) \binom{n}{k_1(i)} q^{
 
 In the M-step, we compute
 \begin{align*}
-\hat{\theta} &= \argmax_\theta Q(\alpha, \alpha') \\
-&= \argmax_\theta \sum_{i=1}^{N} \sum_{l=1}^{M} p(y(i) = c | k_1(i), \theta') (\log \phi_l(k_1(i)) + \log \alpha_l)
+\theta^{k+1} &= \argmax_\theta Q(\theta, \theta^{k}) \\
+&= \argmax_\theta \sum_{i=1}^{N} \sum_{l=1}^{M} p(y(i) = c | k_1(i), \theta^{k}) (\log \phi_l(k_1(i)) + \log \alpha_l)
 \end{align*}
-
-M-step:
-
-$\alpha_1^{k+1} = \alpha^{k+1} = \frac{1}{N} \sum_{i=1}^{N} p(y(i) = 1 | k_1(i), \mathbf{\theta^{k}})$ \\
-$\alpha_0^{k+1} = 1 - \alpha_1^{k+1} = 1 - \alpha^{k+1}$\\
+Then, we get:
+\begin{align*}
+\alpha_1^{k+1} &= \alpha^{k+1} = \frac{1}{N} \sum_{i=1}^{N} p(y(i) = 1 | k_1(i), \theta^{k}) \\
+\alpha_0^{k+1} &= 1 - \alpha^{k+1} \\
+p^{k+1} &= \frac{\sum_{i=1}^{N} p(y(i) = 1 | k_1(i), \theta^{k}) k_1(i)}{n \sum_{i=1}^{N} p(y(i) = 1 | k_1(i), \theta^{k})} \\
+q^{k+1} &= \frac{\sum_{i=1}^{N} p(y(i) = 0 | k_1(i), \theta^{k}) k_1(i)}{n \sum_{i=1}^{N} p(y(i) = 0 | k_1(i), \theta^{k})}
+\end{align*}
 
