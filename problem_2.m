@@ -1,4 +1,4 @@
-function [  ] = problem_2( )
+function [FIM_vals, CRLB  ] = problem_2( )
 %UNTITLED3 Summary of this function goes here
 %   Detailed explanation goes here
 
@@ -22,7 +22,9 @@ function [  ] = problem_2( )
     end
     
     FIM_vals = (1 / 200.0) * FIM_vals;
+    CRLB = ones(9, 1) ./ FIM_vals;
     FIM_vals
+    CRLB
 
 end
 
