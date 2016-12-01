@@ -1,10 +1,22 @@
 \section{Maximum Likelihood and Expectation-Maximization}
 
 \subsection{Maximum Likelihood Equations}
-Want to do: $\frac{\delta \log p}{\delta \mathbf{\theta}} = \mathbf{0}$
+Given Equation \ref{main_pmf}, let the likelihood be
 \begin{align*}
-\log p(k_1(1), \cdots, k_1(N) | \alpha, p, q) &= \sum_{i=1}^{N} \log \left[ \alpha \binom{n}{k_1(i)} p^{k_1(i)} (1-p)^{n - k_1(i)} + (1-\alpha) \binom{n}{k_1(i)} q^{k_1(i)} (1-q)^{n - k_1(i)}  \right] 
+L(\mathbb{\theta}) = p(k_1(1), \cdots, k_1(N) | \mathbb{\theta})\ 
 \end{align*}
+Then, the log-likelihood is
+\begin{align*}
+\log L(\mathbb{\theta}) &= \sum_{i=1}^{N} \log \left[ \alpha \binom{n}{k_1(i)} p^{k_1(i)} (1-p)^{n - k_1(i)} + (1-\alpha) \binom{n}{k_1(i)} q^{k_1(i)} (1-q)^{n - k_1(i)}  \right] 
+\end{align*}
+
+The maximum log-likelihood is given by
+\begin{align*}
+\hat{\theta} = \argmax_{\theta} \log L(\mathbb{\theta})
+\end{align*}
+Therefore, the maximum likelihood equations are given by:
+%Want to do: $\frac{\delta \log p}{\delta \mathbf{\theta}} = \mathbf{0}$
+
 \begin{align*}
 \frac{\delta \log p}{\delta \mathbf{\theta}} &= \begin{bmatrix} 
 \sum_{i=1}^{N} \frac{\phi_1(k_1(i)) - \phi_0(k_1(i))}{\alpha \phi_1(k_1(i)) + (1-\alpha)\phi_0(k_1(i))} \\ 
@@ -14,17 +26,39 @@ Want to do: $\frac{\delta \log p}{\delta \mathbf{\theta}} = \mathbf{0}$
 
 \subsection{EM Algorithm}
 
-Let $k_1(1), \cdots, k_1(N)$ be the observed data. 
-We introduce membership variables $y(i), \cdots, y(N)$ (hidden data) such that $p(y(i) = c) = \alpha_c$. Because we only have two clases, then 
+Let $\mathbf{k_1} = k_1(1), \cdots, k_1(N)$ be the observed data. 
+We introduce membership variables $\mathbf{y} = y(i), \cdots, y(N)$ (hidden data) such that $p(y(i) = c) = \alpha_c$. Because we only have two classes, then 
 \begin{align*}
 p(y(i) = 1) &= \alpha \\
 p(y(i) = 0) &= 1-p(y(i) = 1) = 1 - \alpha
 \end{align*}
 
-E-step is given by:
+The joint probability mass function is given by:
 \begin{align*}
-p(y(i) = 1 | k_1(i), \mathbf{\theta}) &= \frac{\alpha \binom{n}{k_1(i)} p^{k_1(i)} (1-p)^{n-k_1(i)}}{\alpha \binom{n}{k_1(i)} p^{k_1(i)} (1-p)^{n-k_1(i)} + (1-\alpha) \binom{n}{k_1(i)} q^{k_1(i)} (1-q)^{n-k_1(i)}} \\
-p(y(i) = 0 | k_1(i), \mathbf{\theta}) &= \frac{(1-\alpha) \binom{n}{k_1(i)} q^{k_1(i)} (1-q)^{n-k_1(i)}}{\alpha \binom{n}{k_1(i)} p^{k_1(i)} (1-p)^{n-k_1(i)} + (1-\alpha) \binom{n}{k_1(i)} q^{k_1(i)} (1-q)^{n-k_1(i)}}
+p(\mathbf{k_1}, \mathbf{y} | \theta ) &= \prod_{i=1}^{N} p(k_1(i), y(i) | \theta ) \\
+&= \prod_{i=1}^{N} p(k_1(i) | y(i) ) p(y(i) | \theta )  \\
+&= \prod_{i=1}^{N} \prod_{l=1}^{M} (\phi_l(k_1(i) \alpha_l)) ^ {I(y(i)=l)}
+\end{align*}
+
+Let $Q$ be an auxiliary function such that
+\begin{align*}
+Q(\alpha, \alpha') &= \mathrm{E} \left[ \log p(\mathbf{k_1}, \mathbf{y} | \theta ) | \mathbf{k_1}, \theta' \right] \\
+&= \mathrm{E} \left[ \sum_{i=1}^{N} \sum_{l=1}^{M} I(y(i)=l) (\log \phi_l(k_1(i)) + \log \alpha_l) | \mathbf{k_1}, \theta' \right] \\
+&= \sum_{i=1}^{N} \sum_{l=1}^{M} \mathrm{E} \left[ I(y(i)=l) | \mathbf{k_1}, \theta' \right] (\log \phi_l(k_1(i)) + \log \alpha_l)  \\
+&= \sum_{i=1}^{N} \sum_{l=1}^{M} p(y(i) = c | k_1(i), \theta') (\log \phi_l(k_1(i)) + \log \alpha_l)
+\end{align*}
+
+In the E-step of the EM algorithm, we compute $p(y(i) = c | k_1(i), \theta')$. 
+In our case of $M=2$ the E-step is given by:
+\begin{align*}
+p(y(i) = 1 | k_1(i), \mathbf{\theta'}) &= \frac{\alpha \binom{n}{k_1(i)} p^{k_1(i)} (1-p)^{n-k_1(i)}}{\alpha \binom{n}{k_1(i)} p^{k_1(i)} (1-p)^{n-k_1(i)} + (1-\alpha) \binom{n}{k_1(i)} q^{k_1(i)} (1-q)^{n-k_1(i)}} \\
+p(y(i) = 0 | k_1(i), \mathbf{\theta'}) &= \frac{(1-\alpha) \binom{n}{k_1(i)} q^{k_1(i)} (1-q)^{n-k_1(i)}}{\alpha \binom{n}{k_1(i)} p^{k_1(i)} (1-p)^{n-k_1(i)} + (1-\alpha) \binom{n}{k_1(i)} q^{k_1(i)} (1-q)^{n-k_1(i)}}
+\end{align*}
+
+In the M-step, we compute
+\begin{align*}
+\hat{\theta} &= \argmax_\theta Q(\alpha, \alpha') \\
+&= \argmax_\theta \sum_{i=1}^{N} \sum_{l=1}^{M} p(y(i) = c | k_1(i), \theta') (\log \phi_l(k_1(i)) + \log \alpha_l)
 \end{align*}
 
 M-step:

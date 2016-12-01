@@ -1,19 +1,42 @@
 \section{Introduction}
 
-Probability mass function for first bonomial:
+This project deals with estimating a mixture model for two multimodal distributions for $M$ different categories:
+\begin{align}
+p(k_1, \cdots, k_M | p_1, \cdots, p_M) &= \frac{n!}{\prod_{l}^{}k_l!} \prod_{l=1}^{M} p_l^{k_l} ,\qquad \sum_{l}^{M} p_l = 1 \text{ and } \sum_{l}^{M} k_l = n \\
+p(k_1, \cdots, k_M | q_1, \cdots, q_M) &= \frac{n!}{\prod_{l}^{}k_l!} \prod_{l=1}^{M} q_l^{k_l}
+,\qquad \sum_{l}^{M} q_l = 1 \text{ and } \sum_{l}^{M} k_l = n
+\end{align}
+
+Consider a mixing process of iid realizations from each process 
+$\{k_i(1)^{(p)}\}, \cdots, \{k_i(N)^{(p)}\}$ from $p$ and
+$\{k_i(1)^{(q)}\}, \cdots, \{k_i(N)^{(q)}\}$ from $q$.
+At each time instance $t=1, \cdots, N$, we observe $\{k_i(t)^{(p)}\}$ with probability $\alpha$ and $\{k_i(t)^{(q)}\}$ with probability $(1-\alpha)$. 
+In this project, we focus on $M=2$, the binomial case.
+
+Because $M=2$, let $k_2 = n-k_1$, $p_1=p$, $p_2=1-p$, $q_1=q$, $q_2=1-q$.
+Then, the probability mass function for the first bonomial distribution is given by:
 \begin{align*}
 \phi_1(k_1(i)) = p(k_1(i) | p) = \binom{n}{k_1(i)} p^{k_1(i)} (1-p)^{n - k_1(i)}
 \end{align*}
-
-Probability mass function for second binomial:
+The probability mass function for the second binomial distribution is given by:
 \begin{align*}
 \phi_0(k_1(i)) = p(k_1(i) | q) = \binom{n}{k_1(i)} q^{k_1(i)} (1-q)^{n - k_1(i)}
 \end{align*}
 
-Probability mass function for mixture model:
+Assuming a fixed observation length $n$ at every time instance, the probability mass function for the mixture model is given by:
+\begin{align}
+\label{main_pmf}
+%p(k_1(1), \cdots, k_1(N) | \alpha, p, q) &= \prod_{i=1}^{N} \left[ \alpha \phi_1(k_1(i)) + (1-\alpha)\phi_0(k_1(i)) \right] \nonumber \\
+p(k_1(1), \cdots, k_1(N) | \alpha, p, q) &= \prod_{i=1}^{N} \left[ \alpha \binom{n}{k_1(i)} p^{k_1(i)} (1-p)^{n - k_1(i)} + (1-\alpha) \binom{n}{k_1(i)} q^{k_1(i)} (1-q)^{n - k_1(i)}  \right]
+\end{align}
+
+
+The parameter vector for this problem is given by:
 \begin{align*}
-p(k_1(1), \cdots, k_1(N) | \alpha, p, q) &= \prod_{i=1}^{N} \left[ \alpha \phi_1(k_1(i)) + (1-\alpha)\phi_0(k_1(i)) \right] \\
-&= \prod_{i=1}^{N} \left[ \alpha \binom{n}{k_1(i)} p^{k_1(i)} (1-p)^{n - k_1(i)} + (1-\alpha) \binom{n}{k_1(i)} q^{k_1(i)} (1-q)^{n - k_1(i)}  \right]
+\mathbf{\theta} =
+\begin{bmatrix} 
+\alpha \\ 
+p \\ 
+q 
+\end{bmatrix}
 \end{align*}
-
-
