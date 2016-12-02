@@ -24,11 +24,11 @@ The probability mass function for the second binomial distribution is given by:
 \end{align*}
 
 Assuming a fixed observation length $n$ at every time instance, the probability mass function for the mixture model is given by:
-\begin{align*}
+\begin{align}
 \label{main_pmf}
 %p(k_1(1), \cdots, k_1(N) | \alpha, p, q) &= \prod_{i=1}^{N} \left[ \alpha \phi_1(k_1(i)) + (1-\alpha)\phi_0(k_1(i)) \right] \nonumber \\
 p(k_1(1), \cdots, k_1(N) | \alpha, p, q) &= \prod_{i=1}^{N} \left[ \alpha \binom{n}{k_1(i)} p^{k_1(i)} (1-p)^{n - k_1(i)} + (1-\alpha) \binom{n}{k_1(i)} q^{k_1(i)} (1-q)^{n - k_1(i)}  \right]
-\end{align*}
+\end{align}
 
 
 The parameter vector for this problem is given by:

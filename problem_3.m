@@ -19,12 +19,9 @@ function [  ] = problem_3( )
     p_squared_error_sum = zeros(alphas, 1);
     q_squared_error_sum = zeros(alphas, 1);
     
-    all_bags = [];
-    
     %Initialize values
     for i = 1:alphas
         real_alpha_vals(i, 1) = i * 0.1;
-        all_bags = cat(2, all_bags, get_bags(real_alpha_vals(i, 1), p, q, n, N));
     end
     
     for a = 1:alphas
@@ -35,8 +32,10 @@ function [  ] = problem_3( )
             p_vals(a, 1) = rand();
             q_vals(a, 1) = rand();
             
+            bags = get_bags(real_alpha_vals(a, 1) , p, q, n, N);
+            
             %Run EM
-            [alpha_vals(a, 1), p_vals(a, 1), q_vals(a, 1)] = EM_step(alpha_vals(a, 1), p_vals(a, 1), q_vals(a, 1), n, N, all_bags(:, a));
+            [alpha_vals(a, 1), p_vals(a, 1), q_vals(a, 1)] = EM_step(alpha_vals(a, 1), p_vals(a, 1), q_vals(a, 1), n, N, bags);
             
             %Compute MSE
             alpha_iteration = alpha_vals(a, 1);
