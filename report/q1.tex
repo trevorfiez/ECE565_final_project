@@ -1,11 +1,11 @@
 \section{Introduction}
 
 This project deals with estimating a mixture model for two multimodal distributions for $M$ different categories:
-\begin{align}
+\begin{align*}
 p(k_1, \cdots, k_M | p_1, \cdots, p_M) &= \frac{n!}{\prod_{l}^{}k_l!} \prod_{l=1}^{M} p_l^{k_l} ,\qquad \sum_{l}^{M} p_l = 1 \text{ and } \sum_{l}^{M} k_l = n \\
 p(k_1, \cdots, k_M | q_1, \cdots, q_M) &= \frac{n!}{\prod_{l}^{}k_l!} \prod_{l=1}^{M} q_l^{k_l}
 ,\qquad \sum_{l}^{M} q_l = 1 \text{ and } \sum_{l}^{M} k_l = n
-\end{align}
+\end{align*}
 
 Consider a mixing process of iid realizations from each process 
 $\{k_i(1)^{(p)}\}, \cdots, \{k_i(N)^{(p)}\}$ from $p$ and
