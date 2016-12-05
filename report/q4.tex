@@ -1,1 +1,17 @@
 \section{Method of Moments}
+
+For our Method of Moments estimator we used the first, second and third order moments of the value of the number of positive samples to solve for p, q, $\alpha$. To solve for the values we used the matlab function to solve for a series of unknowns. The moments are given by the following equations.
+
+\begin{align*}
+E[K1] &= \alpha np + (1 - \alpha)nq = \overline{K1} \\
+E[{K1}^2] &= \alpha (n(n - 1)p^2 + np) + (1 - \alpha)(n(n - 1)q^2 + nq) = \overline{{K1}^2} \\
+E[{K1}^3] &= \alpha (n(n - 1)(n - 2)p^3 + 3n(n - 1)p^2 + np) + (1 - \alpha)(n(n - 1)(n - 2)q^3 + 3n(n - 1)q^2 + nq) = \overline{{K1}^3}
+\end{align*}
+
+Where
+
+\begin{align*}
+\overline{K1} &= \frac{1}{N} \sum_{i = 1}^{N} k_1(i) \\
+\overline{{K1}^2} &= \frac{1}{N} \sum_{i = 1}^{N} {k_1(i)}^2 \\
+\overline{{K1}^3} &= \frac{1}{N} \sum_{i = 1}^{N} {k_1(i)}^3 \\
+\end{align*}
