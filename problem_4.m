@@ -6,7 +6,7 @@ function [  ] = problem_4( )
     n = 20;
     N = 20;
     alphas = 9;
-    trials = 200;
+    trials = 1;
     
     alpha_squared_error_sum = zeros(alphas, 1);
     p_squared_error_sum = zeros(alphas, 1);
