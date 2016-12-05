@@ -1,4 +1,4 @@
-function [  ] = problem_3( )
+function [all_mse_alpha, all_p_alpha, all_q_alpha  ] = problem_3( )
 
     %p must be < q (used to compute MSE later)
     p = 0.2;
@@ -7,7 +7,7 @@ function [  ] = problem_3( )
     N = 20;
     
     alphas = 9;
-    trials = 200;
+    trials = 10;
     
     alpha_vals = ones(alphas, 1);
     p_vals = zeros(alphas, 1);
@@ -35,7 +35,9 @@ function [  ] = problem_3( )
             bags = get_bags(real_alpha_vals(a, 1) , p, q, n, N);
             
             %Run EM
-            [alpha_vals(a, 1), p_vals(a, 1), q_vals(a, 1)] = EM_step(alpha_vals(a, 1), p_vals(a, 1), q_vals(a, 1), n, N, bags);
+            for em_its = 0:200
+                [alpha_vals(a, 1), p_vals(a, 1), q_vals(a, 1)] = EM_step(alpha_vals(a, 1), p_vals(a, 1), q_vals(a, 1), n, N, bags);
+            end
             
             %Compute MSE
             alpha_iteration = alpha_vals(a, 1);

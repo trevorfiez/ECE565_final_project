@@ -12,9 +12,10 @@ function [ ] = create_plot(  )
     end
     
     figure
-    legend('EM empirical MSE', 'CRLB')
+    title('Comparison of EM and MOM estimators to the CRLB');
+    
     subplot(3,1,1)
-    plot(alpha_vals, alpha_em, alpha_vals, alpha_crlb)
+    lines = plot(alpha_vals, alpha_em, alpha_vals, alpha_crlb)
     xlabel('\alpha')
     ylabel('MSE(\alpha)')
 %     axis([0.1, 0.9, 0, 1])
@@ -31,6 +32,13 @@ function [ ] = create_plot(  )
     %plot(alpha_vals, q_crlb)
     xlabel('\alpha')
     ylabel('MSE(q)')
-
+    
+    hL = legend([lines(1), lines(2)],{'EM estimator','CRLB'})
+    
+    pos = [0.4 0.4 0.2 0.2];
+    
+    newUnits = 'normalized';
+    
+    set(hL, 'Position', pos, 'Units', newUnits);
 end
 
