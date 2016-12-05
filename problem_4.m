@@ -19,6 +19,11 @@ function [  ] = problem_4( )
         real_alpha_vals(i, 1) = i * 0.1;
     end
     
+    %Matrix to store result per trial
+    alpha_squared_error_per_trial = zeros(trials, alphas);
+    p_squared_error_per_trial = zeros(trials, alphas);
+    q_squared_error_per_trial = zeros(trials, alphas);
+    
     for a = 1:alphas
         for trial = 1:trials
             bags = get_bags(real_alpha_vals(a, 1) , p, q, n, N);
@@ -28,10 +33,18 @@ function [  ] = problem_4( )
                 alpha_squared_error_sum(a,1) = alpha_squared_error_sum(a,1) + (est_alpha - real_alpha_vals(a,1))^2;
                 p_squared_error_sum(a,1) = p_squared_error_sum(a,1) + (est_p - p)^2;
                 q_squared_error_sum(a,1) = q_squared_error_sum(a,1) + (est_q - q)^2;
+                
+                alpha_squared_error_per_trial(trial,a) = (est_alpha - real_alpha_vals(a,1))^2;
+                p_squared_error_per_trial(trial,a) = (est_p - p)^2;
+                q_squared_error_per_trial(trial,a) = (est_q - q)^2;
             end
             
         end
     end
+    
+    save('MOM_alpha_p_q_squared_error_per_trial_p0.2_q0.4_n20_N20.mat', 'alpha_squared_error_per_trial', 'p_squared_error_per_trial', 'q_squared_error_per_trial');
+%     save('p_squared_error_per_trial_n200_N200.mat', 'p_squared_error_per_trial');
+%     save('q_squared_error_per_trial_n200_N200.mat', 'q_squared_error_per_trial');
     
     %Print empirical MSE
     all_mse_alpha = zeros(alphas, 1);
