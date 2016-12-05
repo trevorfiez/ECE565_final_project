@@ -4,10 +4,10 @@ function [all_mse_alpha, all_p_alpha, all_q_alpha  ] = problem_3( )
     p = 0.2;
     q = 0.4;
     n = 20;
-    N = 20;
+    N = 200;
     
     alphas = 9;
-    trials = 10;
+    trials = 20;
     
     alpha_vals = ones(alphas, 1);
     p_vals = zeros(alphas, 1);
@@ -28,17 +28,24 @@ function [all_mse_alpha, all_p_alpha, all_q_alpha  ] = problem_3( )
         for trial = 1:trials
             
             %Initialize randomly (trials should be independent)
-            alpha_vals(a, 1) = rand();
-            p_vals(a, 1) = rand();
-            q_vals(a, 1) = rand();
+            %alpha_vals(a, 1) = rand();
+            %p_vals(a, 1) = rand();
+            %q_vals(a, 1) = rand();
             
+           
             bags = get_bags(real_alpha_vals(a, 1) , p, q, n, N);
+            [idx, cluster_centers] = kmeans(bags, 2, 'start', 'uniform');
+            [min_val, min_in] = min(cluster_centers);
+            p_vals(a, 1) = min_val / n;
             
+            alpha_vals(a, 1) = sum(idx(:) == min_in) / N;
+            q_vals(a, 1) = max(cluster_centers) / n;
             %Run EM
-            for em_its = 0:200
+            for em_its = 0:400
                 [alpha_vals(a, 1), p_vals(a, 1), q_vals(a, 1)] = EM_step(alpha_vals(a, 1), p_vals(a, 1), q_vals(a, 1), n, N, bags);
             end
             
+            %return
             %Compute MSE
             alpha_iteration = alpha_vals(a, 1);
             p_iteration = p_vals(a, 1);
@@ -53,6 +60,12 @@ function [all_mse_alpha, all_p_alpha, all_q_alpha  ] = problem_3( )
             alpha_squared_error_sum(a,1) = alpha_squared_error_sum(a,1) + (alpha_iteration - real_alpha_vals(a,1))^2;
             p_squared_error_sum(a,1) = p_squared_error_sum(a,1) + (p_iteration - p)^2;
             q_squared_error_sum(a,1) = q_squared_error_sum(a,1) + (q_iteration - q)^2;
+            
+            temp_a = alpha_squared_error_sum(a, 1) / trial;
+            temp_p = p_squared_error_sum(a, 1) / trial;
+            temp_q = q_squared_error_sum(a, 1) / trial;
+            
+            
         end
     end
     
