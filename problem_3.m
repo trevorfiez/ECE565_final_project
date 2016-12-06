@@ -33,17 +33,18 @@ function [all_mse_alpha, all_p_alpha, all_q_alpha  ] = problem_3( )
         sprintf('Alpha: %d',a)
         for trial = 1:trials
             sprintf('Trial: %d',trial)
+            
+            bags = get_bags(real_alpha_vals(a, 1) , p, q, n, N);
+            
             %Initialize randomly (trials should be independent)
             %alpha_vals(a, 1) = rand();
             %p_vals(a, 1) = rand();
             %q_vals(a, 1) = rand();
-            
            
-            bags = get_bags(real_alpha_vals(a, 1) , p, q, n, N);
+            %Initialize using kmeans
             [idx, cluster_centers] = kmeans(bags, 2, 'start', 'uniform');
             [min_val, min_in] = min(cluster_centers);
             p_vals(a, 1) = min_val / n;
-            
             alpha_vals(a, 1) = sum(idx(:) == min_in) / N;
             q_vals(a, 1) = max(cluster_centers) / n;
             
