@@ -17,14 +17,14 @@ The derivations for the derivatives are included in the appendix. When doing the
 
 \begin{align*}
 P(k | p, n) &= \binom{n}{k}p^{k}(1 - p)^{n - k} \\
-P'(k | p, n) &= \frac{dP}{dp} = 
-P"(k | p, n) &= \frac{d^2P}{d^2p} = 
+P'(k | p, n) &= \frac{dP}{dp} = \binom{n}{k}\left[kp^{k - 1}(1 - p)^{n - k} + (n - k)p^{k}(1 - p)^{n - k - 1}\right]\\
+P"(k | p, n) &= \frac{d^2P}{d^2p} = \binom{n}{k}\left[k(k - 1)p^{k - 2}(1 - p)^{n - k} + 2k(n - k)p^{k - 1}(1 - p)^{n - k - 1} + (n - k)(n - k - 1)p^k(1 - p)^{n - k - 2}\right]\\
 \end{align*}
 
 The Fisher information matrix is then:
 
 \begin{align*}
--E\begin{bmatrix}\frac{d^2\log(L(\mathbb{\theta})}{d^2\theta}\end{bmatrix} &= -N * E\begin{bmatrix}
+-E\begin{bmatrix}\frac{\delta^2\log(L(\mathbb{\theta})}{{\delta\theta}^2}\end{bmatrix} &= -N * E\begin{bmatrix}
 F_{\alpha\alpha} F_{\alpha p} F_{\alpha q} \\
 F_{\alpha p} F_{pp} F_{pq} \\
 F_{\alpha q} F_{pq} F_{qq} \\

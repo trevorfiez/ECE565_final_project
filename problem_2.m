@@ -16,12 +16,15 @@ function [FIM_vals, CRLB, alpha_crlb, p_crlb, q_crlb  ] = problem_2( )
     for i = 1:9
         alpha_vals(i, 1) = i * 0.1;
     end
+    p_other = zeros(9, 1);
     test = FIM_vals(1,:)
     for a = 1:9
-        b = compute_FIM(alpha_vals(a, 1), p, q, n, N);
+        b = compute_FIM(alpha_vals(a, 1), p, q, n, N)
             %c = FIM_vals(a,:,:)
             %d = b
-        FIM_vals(a,:, :) = FIM_vals(a,:, :) + reshape(b, [1 size(b)]);
+        crlb = inv(b);
+        p_other(a, 1) = crlb(2, 2);
+        FIM_vals(a,:, :) = b(:, :);
         squeeze(FIM_vals(a, :, :));
             %FIM_vals(a,:) = FIM_vals(a,:) + compute_FIM(alpha_vals(a, 1), p, q, n, N);
         

@@ -30,12 +30,12 @@ function [ FIM ] = compute_FIM( alpha, p, q, n, N )
         
         FIM(1, 1) = FIM(1, 1) + aa;
         FIM(1, 2) = FIM(1, 2) + ap;
-        FIM(2, 1) = FIM(1, 2);
+        FIM(2, 1) = FIM(2, 1) + ap;
         FIM(1, 3) = FIM(1, 3) + aq;
-        FIM(3, 1) = FIM(1, 3);
+        FIM(3, 1) = FIM(3, 1) + aq;
         FIM(2, 2) = FIM(2, 2) + pp;
         FIM(2, 3) = FIM(2, 3) + pq;
-        FIM(3, 2) = FIM(2, 3);
+        FIM(3, 2) = FIM(3, 2) + pq;
         
         FIM(3, 3) = FIM(3, 3) + qq;
     end
