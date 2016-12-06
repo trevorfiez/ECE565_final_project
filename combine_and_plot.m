@@ -41,7 +41,7 @@ function [ ] = combine_and_plot(  )
     lines = plot(alpha_vals, alpha_crlb, alpha_vals, em_mse_alpha, alpha_vals, mom_mse_alpha)
     xlabel('\alpha')
     ylabel('MSE(\alpha)')
-    axis([0.1, 0.9, 0.000002, 0.06])
+%     axis([0.1, 0.9, 0.000002, 0.06])
     
     subplot(3,1,2)
     plot(alpha_vals, p_crlb, alpha_vals, em_mse_p, alpha_vals, mom_mse_p)

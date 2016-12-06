@@ -36,10 +36,16 @@ function [all_mse_alpha, all_p_alpha, all_q_alpha  ] = problem_3( )
             
             bags = get_bags(real_alpha_vals(a, 1) , p, q, n, N);
             
+            %Initialize using exact number (just to show difference in
+            %results)
+%             alpha_vals(a, 1) = real_alpha_vals(a, 1);
+%             p_vals(a, 1) = p;
+%             q_vals(a, 1) = q;
+            
             %Initialize randomly (trials should be independent)
-            %alpha_vals(a, 1) = rand();
-            %p_vals(a, 1) = rand();
-            %q_vals(a, 1) = rand();
+%             alpha_vals(a, 1) = rand();
+%             p_vals(a, 1) = rand();
+%             q_vals(a, 1) = rand();
            
             %Initialize using kmeans
             [idx, cluster_centers] = kmeans(bags, 2, 'start', 'uniform');
