@@ -58,8 +58,51 @@ p(y(i) = 0 | k_1(i), \mathbf{\theta'}) &= \frac{(1-\alpha) \binom{n}{k_1(i)} q^{
 In the M-step, we compute
 \begin{align*}
 \theta^{k+1} &= \argmax_\theta Q(\theta, \theta^{k}) \\
-&= \argmax_\theta \sum_{i=1}^{N} \sum_{l=1}^{M} p(y(i) = c | k_1(i), \theta^{k}) (\log \phi_l(k_1(i)) + \log \alpha_l)
+&= \argmax_\theta \sum_{i=1}^{N} \sum_{l=1}^{M} p(y(i) = l | k_1(i), \theta^{k}) (\log \phi_l(k_1(i)) + \log \alpha_l)
 \end{align*}
+In our case of $M=2$, we have
+\begin{align*}
+\theta^{k+1} &= \argmax_\theta \sum_{i=1}^{N} [ p(y(i) = 1 | k_1(i), \theta^{k}) (\log \phi_1(k_1(i)) + \log \alpha) + \\
+& \quad \quad \quad \quad \quad \quad \quad p(y(i) = 0 | k_1(i), \theta^{k}) (\log \phi_0(k_1(i)) + \log (1-\alpha)) ]
+\end{align*}
+
+We first maximize $\alpha$. Using Lagrangiang, we get
+\begin{align*}
+L &= \sum_{i=1}^{N} \sum_{l=1}^{M} p(y(i) = c | k_1(i), \theta^{k}) (\log \alpha_l) + \lambda(\sum_{l=1}^{M} \alpha_l - 1)
+\end{align*}
+Then, taking the derivative
+\begin{align*}
+\frac{\delta L}{\delta \alpha} &= \sum_{i=1}^{N} \sum_{l=1}^{M} p(y(i) = c | k_1(i), \theta^{k}) \frac{1}{\alpha_l} + \lambda &= 0
+\alpha_l &= -\frac{1}{\lambda} 
+\end{align*}
+
+
+To maximize $p$, we get:
+\begin{align*}
+p^{k+1} &= \argmax_p \sum_{i=1}^{N}  p(y(i) = 1 | k_1(i), \theta^{k}) \log \phi_1(k_1(i)) \\
+&= \argmax_p \sum_{i=1}^{N}  p(y(i) = 1 | k_1(i), \theta^{k}) \log \binom{n}{k_1(i)} p^{k_1(i)} (1-p)^{n-k_1(i)}  \\
+&= \argmax_p \sum_{i=1}^{N}  p(y(i) = 1 | k_1(i), \theta^{k}) (\log n! - \log k_1(i)! - \log (n-k_1(i))! + k_1(i) \log p + (n-k_1(i)) \log (1-p))
+\end{align*}
+Taking the derivative and making equal to 0:
+\begin{align*}
+\frac{\delta}{\delta p} &= \sum_{i=1}^{N}  p(y(i) = 1 | k_1(i), \theta^{k}) \left( \frac{k_1(i)}{p} + \frac{n-k_1(i)}{1-p} \right) \\
+&= \sum_{i=1}^{N}  p(y(i) = 1 | k_1(i), \theta^{k}) \left( \frac{k_1(i)(1-p) - (n-k_1(i))p}{p(1-p)}
+\right) \\
+&= \sum_{i=1}^{N}  p(y(i) = 1 | k_1(i), \theta^{k}) \left( \frac{k_1(i)- k_1(i)p - np +k_1(i)p}{p(1-p)} \right) \\
+&= \sum_{i=1}^{N}  p(y(i) = 1 | k_1(i), \theta^{k}) \left( \frac{k_1(i)- np}{p(1-p)} \right) \\
+&= \frac{1}{p(1-p)} \sum_{i=1}^{N} p(y(i) = 1 | k_1(i), \theta^{k}) k_1(i) - \frac{1}{p(1-p)} \sum_{i=1}^{N} p(y(i) = 1 | k_1(i), \theta^{k}) np \\
+&= 0 \\
+\end{align*}
+Therefore, the value that maximizes $p$ is
+\begin{align*}
+p^{k+1} = \frac{\sum_{i=1}^{N} p(y(i) = 1 | k_1(i), \theta^{k}) k_1(i)}{n \sum_{i=1}^{N} p(y(i) = 1 | k_1(i), \theta^{k})}
+\end{align*}
+To maximize $q$, we take a similar derivation from the one taken for $p$. Therefore, the value that maximizes $q$ is
+\begin{align*}
+q^{k+1} &= \frac{\sum_{i=1}^{N} p(y(i) = 0 | k_1(i), \theta^{k}) k_1(i)}{n \sum_{i=1}^{N} p(y(i) = 0 | k_1(i), \theta^{k})}
+\end{align*}
+
+
 Then, we get:
 \begin{align*}
 \alpha_1^{k+1} &= \alpha^{k+1} = \frac{1}{N} \sum_{i=1}^{N} p(y(i) = 1 | k_1(i), \theta^{k}) \\

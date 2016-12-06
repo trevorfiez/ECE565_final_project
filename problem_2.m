@@ -6,9 +6,9 @@ function [FIM_vals, CRLB, alpha_crlb, p_crlb, q_crlb  ] = problem_2( )
     p = 0.2;
     q = 0.4;
     n = 20;
-    N = 20;
+    N = 200;
     
-    trials = 200.0;
+%     trials = 200.0;
     
     alpha_vals = ones(9, 1);
     FIM_vals = zeros(9, 3, 3);

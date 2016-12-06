@@ -24,9 +24,15 @@ function [all_mse_alpha, all_p_alpha, all_q_alpha  ] = problem_3( )
         real_alpha_vals(i, 1) = i * 0.1;
     end
     
+    %Matrix to store result per trial
+    alpha_squared_error_per_trial = zeros(trials, alphas);
+    p_squared_error_per_trial = zeros(trials, alphas);
+    q_squared_error_per_trial = zeros(trials, alphas);
+    
     for a = 1:alphas
+        sprintf('Alpha: %d',a)
         for trial = 1:trials
-            
+            sprintf('Trial: %d',trial)
             %Initialize randomly (trials should be independent)
             %alpha_vals(a, 1) = rand();
             %p_vals(a, 1) = rand();
@@ -40,8 +46,10 @@ function [all_mse_alpha, all_p_alpha, all_q_alpha  ] = problem_3( )
             
             alpha_vals(a, 1) = sum(idx(:) == min_in) / N;
             q_vals(a, 1) = max(cluster_centers) / n;
+            
             %Run EM
-            for em_its = 0:400
+            for em_its = 0:100
+%                 sprintf('It: %d',em_its)
                 [alpha_vals(a, 1), p_vals(a, 1), q_vals(a, 1)] = EM_step(alpha_vals(a, 1), p_vals(a, 1), q_vals(a, 1), n, N, bags);
             end
             
@@ -65,9 +73,14 @@ function [all_mse_alpha, all_p_alpha, all_q_alpha  ] = problem_3( )
             temp_p = p_squared_error_sum(a, 1) / trial;
             temp_q = q_squared_error_sum(a, 1) / trial;
             
+            alpha_squared_error_per_trial(trial,a) = (alpha_iteration - real_alpha_vals(a,1))^2;
+            p_squared_error_per_trial(trial,a) = (p_iteration - p)^2;
+            q_squared_error_per_trial(trial,a) = (q_iteration - q)^2;
             
         end
     end
+    
+    save('EM_alpha_p_q_squared_error_per_trial_p0.2_q0.4_n20_N200_trials20.mat', 'alpha_squared_error_per_trial', 'p_squared_error_per_trial', 'q_squared_error_per_trial');
     
     %Print empirical MSE
     all_mse_alpha = zeros(alphas, 1);
