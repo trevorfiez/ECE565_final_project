@@ -1,4 +1,13 @@
 \section{Derivations}
+
+As a reminder here are the equations for P
+
+\begin{align*}
+P(k | p, n) &= \binom{n}{k}p^{k}(1 - p)^{n - k} \\
+P'(k | p, n) &= \frac{dP}{dp} = \binom{n}{k}\left[kp^{k - 1}(1 - p)^{n - k} + (n - k)p^{k}(1 - p)^{n - k - 1}\right]\\
+P"(k | p, n) &= \frac{d^2P}{dp^2} = \binom{n}{k}\left[k(k - 1)p^{k - 2}(1 - p)^{n - k} - (-k + n - 1)(n - k)p^k(1 - p)^{-k + n - 2} \right]\\
+\end{align*}
+
 Deriving derivatives for the FIM beginning with the first derivative of L($\theta$)
 
 \begin{align*}
@@ -51,3 +60,4 @@ F_{qq} &= \frac{\partial}{\partial q}\frac{(1 - \alpha) P'(k | q, n)}{\alpha P(k
 F_{qq} &= \frac{(1 - \alpha) P"(k | q, n)}{\alpha P(k | p, n) + (1-\alpha)P(k | q, n)} - \frac{((1 - \alpha)P'(k | q, n))^2}{(\alpha P(k | p, n) + (1 - \alpha) P(k | q, n))^2} \\
 F_{qq} &= \frac{\alpha(1 - \alpha)P"(k | q, n)P(k | p, n) + (1 - \alpha)^2P"(k | q, n)P(k | q, n) - (1 - \alpha)^2P"(k | q, n)^2}{(\alpha P(k | p, n) + (1 - \alpha) P(k | q, n))^2}
 \end{align*}
+
