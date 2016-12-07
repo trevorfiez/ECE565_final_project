@@ -1,6 +1,8 @@
 *.aux
 *.log
 *.synctex.gz
+*.bbl
+*.blg
 
 # Windows image file caches
 Thumbs.db

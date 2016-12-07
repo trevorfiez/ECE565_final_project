@@ -1,0 +1,11 @@
+\section{Conclusion}
+
+
+We derived the FIM and CRLB for estimating the parameters of a mixture model of two binomial distributions with $M=2$ different categories. 
+Our derivations can easily be extended to multimodal distributions with any number of categories.
+We showed the Maximum Likelihood equations for our problem.
+Because the equations do not have a closed-form solution, we used the EM algorithm to obtain an esimator. We derived the equations needed to perform the E-step and M-step.
+We also showed how to use a MOM estimator, where we simply use the first, second, and third order moments to generate a system of equations. By solving this system, we obtain the estimates for our parameters.
+We showed in the empirical results that CRLB is a very low bound, as EM and MOM do not get close to it.
+EM and MOM estimators have a similar performance, with differences only in the edge cases.
+We also showed the impact of initialization on the EM algorithm. 
